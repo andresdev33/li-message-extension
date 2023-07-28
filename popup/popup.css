@@ -1,0 +1,22 @@
+.container {
+  width: auto;
+  color: #314d3e;
+}
+
+label {
+  font-weight: bold;
+}
+
+button {
+  margin: 0.5rem 0;
+}
+
+.position, .scrapping, .custom-message {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+}
+
+.message-alert {
+  color: #4f9f74;
+}

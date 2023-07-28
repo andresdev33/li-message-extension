@@ -1,0 +1,32 @@
+{
+  "name": "LI Message Extension",
+  "version": "0.1.0",
+  "author": "andrese.estepa@arionkoder.com",
+  "description": "Send a custom message based on the candidate's profile",
+  "permissions": ["storage", "tabs"],
+  "host_permissions": ["https://*.linkedin.com/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*.linkedin.com/*"],
+      "js": ["./scripts/contentScript.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "matches": ["https://*.linkedin.com/*"]
+    }
+  ],
+  "action": {
+    "default_icon": {
+      "16": "assets/ext-icon.png",
+      "24": "assets/ext-icon.png",
+      "32": "assets/ext-icon.png"
+    },
+    "default_title": "Profile Parser",
+    "default_popup": "./popup/popup.html"
+  },
+  "manifest_version": 3
+}
