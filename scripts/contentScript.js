@@ -101,16 +101,16 @@
 
     const getSpansTexts = (parentElement) => {
         const allSpans = parentElement.querySelectorAll('span');
-        const spanTexts = new Set();
+        const spanTexts = [];
 
         allSpans.forEach((span) => {
             const text = span.innerText.trim();
             if (text.length > 0) {
-                spanTexts.add(text);
+                spanTexts.push(text);
             }
         });
 
-        return [...spanTexts];
+        return spanTexts;
     }
 
     const openMessagePopup = (message) => {
