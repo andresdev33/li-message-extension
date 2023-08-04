@@ -1,19 +1,22 @@
 <link href="popup.css" rel="stylesheet" type="text/css" />
 <script type="module" src="popup.js"></script>
 
-<article id="container" class="container">
-  <section class="position">
+<article id="container-main" class="container">
+  <div id="candidate-exists"></div>
+  <section class="position" id="positionSection">
     <fieldset>
+      <legend>ArionKoder Hackathon</legend>
+      <legend>Recruiter Name:</legend>
+      <input type="text" name="recruiterName" id="recruiterName">
+      <legend>Recruiter Email:</legend>
+      <input type="text" name="recruiterEmail" id="recruiterEmail">
       <legend>Select a position:</legend>
       <select name="position" id="position">
         <option value="">Please choose an option...</option>
-        <option value="frontdev">Frontend Dev</option>
-        <option value="backdev">Backend Dev</option>
-        <option value="pythondev">Python Dev</option>
       </select>
     </fieldset>
-  </section>
-  <section class="custom-message">
+  </section><br>
+  <section class="custom-message" id="messageSection">
     <fieldset>
       <legend>Message</legend>
       <button id="get-message">Get Message</button>
@@ -21,5 +24,22 @@
     </fieldset>
   </section>
 </article>
-
+<!-- container contacted -->
+<article id="container-contacted" class="container">
+  <section id="contactedSection">
+<fieldset>
+  <legend>ArionKoder Hackathon</legend>Candidate already contacted<br><br>
+  <div id="get-status">Status: </div>
+  <br><br>
+  <select name="status" id="status">
+    <option value="">Please choose an Status...</option>
+    <option value="contacted">contacted</option>
+    <option value="said_no">Said no</option>
+    <option value="said_yes">Said yes (interview)</option>
+    <option value="had_questions">Had questions</option>
+    <option value="positive_interview">Positive interview</option>
+    <option value="negative_interview">Negative interview</option>
+  </select><br><br><button id="update-status">Update Status</button>
+</article>
+</section>
 <div id="not-linkedin-page">Not a LinkedIn profile page</div>

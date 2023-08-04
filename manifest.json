@@ -4,7 +4,7 @@
   "author": "andrese.estepa@arionkoder.com",
   "description": "Send a custom message based on the candidate's profile",
   "permissions": ["storage", "tabs"],
-  "host_permissions": ["https://*.linkedin.com/*"],
+  "host_permissions": ["https://*.linkedin.com/*","https://sw7blq3c19.execute-api.us-east-1.amazonaws.com/*"],
   "background": {
     "service_worker": "background.js"
   },
