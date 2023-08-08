@@ -2,7 +2,7 @@
     const currentProfile = {};
 
     const onMessageHandler = (obj, sender, response) => {
-        const { type, value, linkedInProfileId } = obj;
+        const { type, value, linkedInProfileId, message } = obj;
 
         if (type === 'NEW') {
             newProfileLoaded(linkedInProfileId);
@@ -13,11 +13,29 @@
         }
 
         if (type === 'CREATE_MESSAGE') {
-            createLinkedInMessage(obj);
+            createLinkedInMessage(message);
+        }
+        if (type === 'SAVE_POSITION') {
+            savePosition(message);
         }
     }
 
+    const getPositionFromStorage = () => {
+        return new Promise((resolve) => {
+            chrome.storage.sync.get(['position'], (obj) => {
+                resolve(obj['position'] ? JSON.parse(obj['position']) : {});
+            });
+        });
+    };
+
     chrome.runtime.onMessage.addListener(onMessageHandler);
+
+    const savePosition = (message) => {
+        const obj = {
+            position: message
+        }
+        chrome.storage.sync.set({['position']: JSON.stringify(obj)});
+    }
 
     const newProfileLoaded = (linkedInProfileId) => {
         const [userName] = document.getElementsByTagName('h1');
@@ -38,7 +56,7 @@
         chrome.storage.sync.set({['currentProfile']: JSON.stringify(currentProfile)});
     };
 
-    const createLinkedInMessage = ({ message }) => {
+    const createLinkedInMessage = (message) => {
         const messageBox = document.querySelector('div.msg-form__contenteditable.t-14.t-black--light.t-normal.flex-grow-1.full-height.notranslate');
         const placeholderDiv = document.querySelector('div.msg-form__placeholder.t-14.t-black--light.t-normal');
 
@@ -117,7 +135,7 @@
         const buttons = document.getElementsByTagName("button");
         for (let i = 0; i < buttons.length; i++) {
             const button = buttons[i];
-            if (button.innerText.toLowerCase().includes('message')) {
+                if (button.innerText.toLowerCase().includes("mensaje") || button.innerText.toLowerCase().includes("message")){
                 button.click();
 
                 // Esperando que se muestre el popup de linkedin antes de meter el mensaje
@@ -135,10 +153,28 @@
         }
     };
 
+    const sendPost = async (data) => {
+        const response = await fetch("https://sw7blq3c19.execute-api.us-east-1.amazonaws.com/production/save-candidate", {
+          method: "POST", // or 'PUT'
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+    }
+
     const handleSendMessageFromLinkedin = () => {
         const sendMessageLinkedInButton = document.getElementsByClassName('msg-form__send-button')[0];
-        const sendMessageHandler = () => {
+        const sendMessageHandler = async () => {
             // TODO enviar request al backend para guardar el candidato en DB
+            const url = document.location.href;
+            const position = await getPositionFromStorage();
+            const data = {
+                json: JSON.stringify(currentProfile),
+                url: url,
+                position: position.position
+            }
+            await sendPost(data);
             console.log(`Sending profile ${JSON.stringify(currentProfile)} to backend`);
         };
 

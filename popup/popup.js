@@ -49,12 +49,13 @@ const sendPost = async (data) => {
       },
       body: JSON.stringify(data),
     });
-
+    const { id: tabId, url } = await getActiveTab();
     const result = await response.json();
     const resultJson = JSON.stringify(result);
     const resultParsed = JSON.parse(resultJson);
     const contentParsed = JSON.parse(resultParsed.content)
     divProfileText.innerText = contentParsed.message;
+    await chrome.tabs.sendMessage(tabId, { type: "CREATE_MESSAGE", message: contentParsed.message });
 }
 
 const getPositions = async () => {
@@ -152,11 +153,12 @@ const onGetMessageFromBackend = async () => {
         const data = {
             recruiterName : recruiterNameValue,
             recruiterEmail: recruiterEmailValue,
-            json: profile
+            json: profile,
+            position: selectedPosition
         }
 
         await sendPost(data);
-
+        await chrome.tabs.sendMessage(tabId, { type: "SAVE_POSITION", message: selectedPosition });
     }
 };
 
